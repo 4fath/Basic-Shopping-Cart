@@ -59,8 +59,8 @@ public class ApiController {
 
     @GetMapping("/print/{cartId}")
     public ResponseEntity printCart(@PathVariable("cartId") String cartId) {
-        CartDto.Cart cartDto = service.printCart(cartId);
-        return ResponseEntity.ok(cartDto);
+        CartDto.Cart cart = service.printCart(cartId);
+        return ResponseEntity.ok(cart);
     }
 
 }
