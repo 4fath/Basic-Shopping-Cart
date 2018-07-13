@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/v1")
 public class ApiController {
 
     @Autowired
@@ -38,8 +39,8 @@ public class ApiController {
     }
 
     @PostMapping("/cart")
-    public ResponseEntity createCart(@RequestBody CartDto cartDto) {
-        String cartId = service.createCart(cartDto);
+    public ResponseEntity createCart() {
+        String cartId = service.createCart();
         return new ResponseEntity<>(cartId, HttpStatus.CREATED);
     }
 

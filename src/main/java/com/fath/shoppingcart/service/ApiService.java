@@ -57,10 +57,11 @@ public class ApiService {
         return uuid;
     }
 
-    public String createCart(CartDto cartDto) {
+    public String createCart() {
+        CartDto cart = new CartDto();
         String uuid = UUID.randomUUID().toString();
-        cartDto.setId(uuid);
-        repository.saveCart(cartDto);
+        cart.setId(uuid);
+        repository.saveCart(cart);
         return uuid;
     }
 
