@@ -7,6 +7,10 @@ import java.util.Set;
 
 public final class DeliveryCostCalculator {
 
+    public static final double DEFAULT_COST_PER_DELIVERY = 4.00;
+    public static final double DEFAULT_COST_PER_PRODUCT = 4.50;
+    public static final double DEFAULT_FIXED_COST = 2.99;
+
     private Double costPerDelivery;
     private Double costPerProduct;
     private Double fixedCost = 2.99;
