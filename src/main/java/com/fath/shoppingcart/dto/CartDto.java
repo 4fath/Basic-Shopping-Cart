@@ -28,14 +28,19 @@ public class CartDto implements Serializable {
     private final Set<CampaignDto> appliedCampaigns = new HashSet<>();
     private final Set<CouponDto> appliedCoupons = new HashSet<>();
 
+    private double couponDiscount;
+    private double campaignDiscount;
+    private double deliveryDiscount;
+
     public void applyDiscount(CampaignDto campaignDto) {
         if (this.totalProductCount < campaignDto.getMinItemCount() || campaignDto.isApplied()) {
             return;
         }
 
-        double canApply = this.calculateApplicableDiscount(campaignDto);
-        if (canApply > this.appliedDiscountAmount) {
-            this.appliedDiscountAmount = canApply;
+        double applicableAmount = this.calculateApplicableDiscount(campaignDto);
+
+        if (applicableAmount > this.appliedDiscountAmount) {
+            this.appliedDiscountAmount = applicableAmount;
             this.totalAmountWithDiscount = totalAmount - appliedDiscountAmount;
             this.isDiscountApplied = true;
             this.discountType = campaignDto.getDiscountType();
@@ -44,6 +49,8 @@ public class CartDto implements Serializable {
     }
 
     private double calculateApplicableDiscount(CampaignDto campaignDto) {
+        appliedCampaigns.add(campaignDto);
+
         final double[] totalDiscount = {0}; // really awful way
         switch (campaignDto.getDiscountType()) {
             case RATE:
@@ -79,7 +86,6 @@ public class CartDto implements Serializable {
         return false;
     }
 
-    // TODO : handle count issue
     // same product can add cart multiple times
     public void addProduct(ProductDto productDto, Integer count) {
         products.add(productDto);
@@ -115,6 +121,7 @@ public class CartDto implements Serializable {
     }
 
     public void applyCoupon(CouponDto couponDto) {
+        appliedCoupons.add(couponDto);
         switch (couponDto.getDiscountType()) {
             case RATE:
                 double discount = (totalAmountWithDiscount * couponDto.getDiscount()) / 100;
@@ -126,5 +133,15 @@ public class CartDto implements Serializable {
 
         }
         totalAmountWithDiscount = totalAmount  - appliedDiscountAmount;
+    }
+
+    public Cart print() {
+        return null;
+    }
+
+
+    @Data
+    public class Cart implements Serializable{
+
     }
 }

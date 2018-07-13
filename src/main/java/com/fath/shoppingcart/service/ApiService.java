@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static com.fath.shoppingcart.service.DeliveryCostCalculator.*;
+
 @Service
 public class ApiService {
 
@@ -39,7 +41,9 @@ public class ApiService {
 
     private void applyCampaignToCarts(CampaignDto campaignDto) {
         repository._cartMap().values().forEach(cartDto -> {
+
             boolean canApplyCampaign = cartDto.canApplyCampaign(campaignDto);
+
             if (canApplyCampaign) {
                 cartDto.applyDiscount(campaignDto);
             }
@@ -76,8 +80,12 @@ public class ApiService {
         }
     }
 
-    public CartDto printCart(String cartId) {
-        String uuid = UUID.randomUUID().toString();
-        return null;
+    public CartDto.Cart printCart(String cartId) {
+        CartDto toPrint = repository._cartMap().get(cartId);
+        DeliveryCostCalculator calculator = new DeliveryCostCalculator(
+                DEFAULT_COST_PER_DELIVERY, DEFAULT_COST_PER_PRODUCT, DEFAULT_FIXED_COST);
+        double deliveryCost = calculator.calculateFor(toPrint);
+        toPrint.setDeliveryDiscount(deliveryCost);
+        return toPrint.print();
     }
 }
