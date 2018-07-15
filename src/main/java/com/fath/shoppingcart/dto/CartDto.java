@@ -1,13 +1,15 @@
 package com.fath.shoppingcart.dto;
 
 import com.fath.shoppingcart.util.DiscountType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Data
 public class CartDto implements Serializable {
@@ -136,12 +138,35 @@ public class CartDto implements Serializable {
     }
 
     public Cart print() {
-        return null;
+        Cart cart = Cart.builder().build();
+        Map<String, List<ProductDto>> collect = products.stream().collect(groupingBy(ProductDto::getCategoryId));
+
+
+
+        return cart;
     }
 
 
     @Data
-    public class Cart implements Serializable{
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static final class Cart implements Serializable {
+        private List<ListItem> listItems = new ArrayList<>();
+        private double totalAmount;
+        private double deliveryCost;
+    }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static final class ListItem implements Serializable {
+        private String categoryName;
+        private String productName;
+        private Integer quantity;
+        private double unitPrice;
+        private double totalPrice;
+        //private double totalDiscount;
     }
 }
