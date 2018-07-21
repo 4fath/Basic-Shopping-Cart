@@ -7,7 +7,9 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class CampaignDto implements Serializable {
+public final class CampaignDto implements Discountable, Serializable {
+
+    private static final long serialVersionUID = 2084718320808609393L;
 
     @JsonIgnore
     private String id;
