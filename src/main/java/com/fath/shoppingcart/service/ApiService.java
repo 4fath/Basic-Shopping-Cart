@@ -39,13 +39,12 @@ public class ApiService {
         return uuid;
     }
 
+    // TODO : make callable future, these all carts are independent
     private void applyCampaignToCarts(CampaignDto campaignDto) {
         repository._cartMap().values().forEach(cartDto -> {
-
             boolean canApplyCampaign = cartDto.canApplyCampaign(campaignDto);
-
             if (canApplyCampaign) {
-                cartDto.applyDiscount(campaignDto);
+                cartDto.applyCampaignToAllCarts(campaignDto);
             }
         });
     }
@@ -71,6 +70,7 @@ public class ApiService {
         cartDto.addProduct(productDto, count);
     }
 
+    // TODO : different queries, do not need to wait other one. when all done, execute it together
     public void applyCoupon(String cartId, String couponId) {
         CouponDto couponDto = repository._couponMap().get(couponId);
         CartDto cartDto = repository._cartMap().get(cartId);
@@ -81,7 +81,7 @@ public class ApiService {
         }
     }
 
-    public CartDto.Cart printCart(String cartId) {
+    public String printCart(String cartId) {
         CartDto toPrint = repository._cartMap().get(cartId);
         DeliveryCostCalculator calculator = new DeliveryCostCalculator(
                 DEFAULT_COST_PER_DELIVERY, DEFAULT_COST_PER_PRODUCT, DEFAULT_FIXED_COST);
