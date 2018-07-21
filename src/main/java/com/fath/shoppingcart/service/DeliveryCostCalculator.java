@@ -1,9 +1,12 @@
 package com.fath.shoppingcart.service;
 
 import com.fath.shoppingcart.dto.CartDto;
+import com.fath.shoppingcart.dto.ProductDto;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public final class DeliveryCostCalculator {
 
@@ -32,9 +35,9 @@ public final class DeliveryCostCalculator {
     }
 
     private int getNumberOfDeliveries(CartDto cart) {
-        Set<String> categoryIds = new HashSet<>();
-        cart.getProducts().forEach(productDto -> categoryIds.add(productDto.getCategoryId()));
-        return categoryIds.size();
+        Map<String, List<ProductDto>> categoryToProducts = cart.getProducts().stream()
+                .collect(groupingBy(ProductDto::getCategoryId));
+        return categoryToProducts.keySet().size();
     }
 
 }
