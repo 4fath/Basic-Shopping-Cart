@@ -3,20 +3,19 @@ package com.fath.shoppingcart.respository;
 import com.fath.shoppingcart.dto.*;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 // savingInformation
 
 @Repository
 public class ApiRepository {
 
-    private final Map<String, CategoryDto> categoryMap = new HashMap<>();
-    private final Map<String, ProductDto> productMap = new HashMap<>();
-    private final Map<String, CampaignDto> campaignMap = new HashMap<>();
-    private final Map<String, CouponDto> couponMap = new HashMap<>();
-    private final Map<String, CartDto> cartMap = new HashMap<>();
-
+    private final Map<String, CategoryDto> categoryMap = new ConcurrentHashMap<>();
+    private final Map<String, ProductDto> productMap = new ConcurrentHashMap<>();
+    private final Map<String, CampaignDto> campaignMap = new ConcurrentHashMap<>();
+    private final Map<String, CouponDto> couponMap = new ConcurrentHashMap<>();
+    private final Map<String, CartDto> cartMap = new ConcurrentHashMap<>();
 
     public void saveCategory(CategoryDto categoryDto) {
         categoryMap.put(categoryDto.getId(), categoryDto);
@@ -37,7 +36,6 @@ public class ApiRepository {
     public void saveCart(CartDto cartDto) {
         cartMap.put(cartDto.getId(), cartDto);
     }
-
 
     public Map<String, CategoryDto> _categoryMap() {
         return categoryMap;
